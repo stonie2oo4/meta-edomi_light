@@ -7,7 +7,7 @@
       "edomiURI": "192.168.5.7",
       "edomiKOwrite": "3317",
       "edomiKOread": "3318",
-      "VolumePlayed":50
+      "Brightness":50
     },
     "labels":{
         "CurrentStatus" : {"label":"status", "listen":"MyStatus"}
@@ -15,15 +15,15 @@
     "listeners":{
         "edomiStatus" : {"type":"http-get", "command":"http://$edomiURI/remote/?login=remote&pass=remote&koid=$edomiKOread", "pooltime":"3000", "poolduration":"", "queryresult" : "$.", 
           "evalwrite" : [
-          {"variable" : "VolumePlayed","value" : "DYNAMIK Math.round(Number(JSON.parse(\"$Result\")[0].volume)*100/255)"}
+          {"variable" : "Brightness","value" : "DYNAMIK Math.round(Number(JSON.parse(\"$Result\")[0].brightness)*100/255)"}
         ]}
     },
     "buttons":{
-      "VOLUME UP": {"label":"", "type":"static", "command":"", "evalwrite":[{"variable":"VolumePlayed","value":"DYNAMIK (Number($VolumePlayed)<95)?Number($VolumePlayed)+5:100"}], "evaldo":[{"test":true, "then":"__VOLUMESET", "or":""}]},
-      "VOLUME DOWN": {"label":"", "type":"static", "command":"", "evalwrite":[{"variable":"VolumePlayed","value":"DYNAMIK (Number($VolumePlayed)>5)?Number($VolumePlayed)-5:0"}], "evaldo":[{"test":true, "then":"__VOLUMESET", "or":""}]},      
-      "__VOLUMESET": {"label":"", "type":"http-get", "command":"DYNAMIK \"http://$edomiURI/remote/?login=remote&pass=remote&koid=$edomiKOwrite&kovalue=\" + (Math.round(0 + (255 - 0) * Number($VolumePlayed) / 100).toString())"}      
+      "BRIGHTNESS UP": {"label":"", "type":"static", "command":"", "evalwrite":[{"variable":"Brightness","value":"DYNAMIK (Number($Brightness)<95)?Number($Brightness)+5:100"}], "evaldo":[{"test":true, "then":"BRIGHTNESSCHANGE", "or":""}]},
+      "BRIGHTNESS DOWN": {"label":"", "type":"static", "command":"", "evalwrite":[{"variable":"Brightness","value":"DYNAMIK (Number($Brightness)>5)?Number($Brightness)-5:0"}], "evaldo":[{"test":true, "then":"BRIGHTNESSCHANGE", "or":""}]},      
+      "BRIGHTNESSCHANGE": {"label":"", "type":"http-get", "command":"DYNAMIK \"http://$edomiURI/remote/?login=remote&pass=remote&koid=$edomiKOwrite&kovalue=\" + (Math.round(0 + (255 - 0) * Number($Brightness) / 100).toString())"}      
     },
     "sliders":{
-        "VOLUME": {"label":"", "unit" : "db", "listen" : "VolumePlayed", "evaldo":[{"test":true, "then":"__VOLUMESET", "or":""}]}
+        "BRIGHTNESS": {"label":"", "unit" : "Lux", "listen" : "Brightness", "evaldo":[{"test":true, "then":"BRIGHTNESSCHANGE", "or":""}]}
     }
 }
