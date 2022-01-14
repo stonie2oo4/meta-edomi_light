@@ -4,7 +4,7 @@
     "type":"LIGHT",
     "variables":{
       "MyStatus":"",
-      "edomiURI": "10.10.45.7",
+      "edomiURI": "192.168.5.7",
       "edomiKOwrite": "3317",
       "edomiKOread": "3318",
       "VolumePlayed":50
